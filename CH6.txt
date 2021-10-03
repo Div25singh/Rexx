@@ -1,0 +1,19 @@
+/* REXX */                                                       
+say ' Report to show a newbie how system commands are issued'    
+say '--------------------------------------------------------'   
+rc=isfcalls('ON')                                                
+mycmd.0=3                                                        
+mycmd.1="$DSPL"                                                  
+mycmd.2="$D JOBQ,JM=S*"                                          
+mycmd.3="$D I"                                                   
+Address SDSF ISFSLASH "("mycmd.") (WAIT)"                        
+Say "isfmsg is:" isfmsg                                          
+Say "isfmsg2.0 is:" isfmsg2.0                                    
+if datatype(isfmsg2.0) = "NUM" then                              
+do ix=1 to isfmsg2.0                                             
+Say "isfmsg2."ix "is:" isfmsg2.ix                                
+end                                                              
+rc=isfcalls('OFF')                                               
+say '--------------------------------------------------'         
+say 'This is the last report, Thankyou'                          
+say '--------------------------------------------------'         

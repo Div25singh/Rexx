@@ -1,0 +1,16 @@
+/* REXX */                                                            
+say '------------------------------------'                            
+say 'Report telling Information about the currently logged in system' 
+say '------------------------------------'                            
+say 'By using *WHO EXEC* Utility command'                             
+say '------------------------------------'                            
+rc=isfcalls('ON')                                                     
+Address SDSF "ISFEXEC WHO"                                            
+do ix=1 to isfresp.0                                                  
+Say "isfresp."ix " is:" isfresp.ix                                    
+end                                                                   
+rc=isfcalls('OFF')                                                    
+say '--------------------------------------------------'              
+say 'View next report'                                                
+say '--------------------------------------------------'              
+exit                                                                  

@@ -1,0 +1,15 @@
+/* REXX */                                                  
+rc=isfcalls('ON')                                           
+isfactions="ON"                                             
+Address SDSF "ISFEXEC ST"                                   
+if rc<>0 then                                               
+Exit rc                                                     
+Say "Report for all the Actions valid on the panel are:"    
+say '--------------------------------------------------'    
+do ix=1 to isfresp.0                                        
+Say " " isfresp.ix                                          
+end                                                         
+rc=isfcalls('OFF')                                          
+say '--------------------------------------------------'    
+say 'View next report'                                      
+say '--------------------------------------------------'    

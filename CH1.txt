@@ -1,0 +1,49 @@
+/*rexx*/                                                               
+b.1=hello                                                              
+b.2= 'Hello students! Its time to get to know this mainframe.....'     
+b.3= ' -------------------------------------------------------------'  
+b.4= 'The report was created by user:'userid()                         
+/* location of member*/                                                
+b.5= ' -------------------------------------------------------------'  
+b.6= 'This is a Syslog Parsing report'                                 
+b.7= ' -------------------------------------------------------------'  
+b.8= 'The location of this report is :'                                
+parse source a                                                         
+b.9= a                                                                 
+/* version of rexx*/                                                   
+b.10= ' -------------------------------------------------------------' 
+b.11= 'This report has been created by the rexx version:'              
+parse version b                                                        
+b.12= b                                                                
+b.13= ' -------------------------------------------------------------' 
+b.14= 'Reading syslog and displaying parsed data'                      
+b.15= '                                                             '  
+b.16= 'Parsing output is written in z00008.p3.output(#15) member'      
+/* read syslog*/                                                       
+address tso "alloc f(dd5) da('z00008.p3.output(#14)') shr"             
+"execio 30 diskr dd5(finis stem a."                                    
+do i=1 to 30 by 1                                                      
+str1=a.i                                                               
+parse var str1 . . w1 .                                                
+if substr(w1,1,6)="STATUS" then                                        
+do                                                                     
+b.17= substr(w1,1,23)                                                  
+b.18= substr(w1,25,9)                                                  
+end                                                                    
+end                                                                    
+parse var a.1 w7 w8 .                                                  
+b.19= "Date is: " w7                                                   
+b.20= "Time is: " w8                                                   
+b.21= 'The information displayed above from syslog for user'         
+b.22= '-------------------------------------------------------------'
+/* address tso "alloc f(dd4) da('z00008.p3.output(#18)') old" */     
+address tso "alloc f(dd4) da('z00008.p3.OUTPUT(#15)') old"           
+"execio * diskw dd4(stem b."                                         
+"execio 0 diskr dd4(finis"                                           
+"free f(dd5)"                                                        
+"free f(dd4)"                                                        
+do i=1 to 22 by 1                                                    
+say b.i                                                              
+end                                                                  
+exit                                                                 
+

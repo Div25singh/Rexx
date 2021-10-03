@@ -1,0 +1,83 @@
+/* rexx */                                                              
+say 'Hello I am user' userid()                                          
+say '-------------------------------'                                   
+say 'Todays system Date is ' date()                                     
+say '-------------------------------'                                   
+say 'Todays system Time is ' time()                                     
+say '-------------------------------'                                   
+say 'More system information written in Z00008.CH15.OUTPUT(#15) member' 
+say '-------------------------------'                                   
+say 'Check ch15.output(#15)'                                            
+say '-------------------------------'                                   
+/* ---------------- */                                                  
+"allocate dataset(ch15.output(#15)) file(msgout) shr reuse"             
+"execio 0 diskw msgout (stem msg. open"                                 
+   u = userid()                                                         
+   d = date()                                                           
+   t = time()                                                           
+   msg.1 = u d t                                                        
+/* ---------------- */                                                  
+"execio * diskw msgout (stem msg. "                                     
+rc=isfcalls('ON')                                                       
+Address SDSF "ISFEXEC SYS"                                              
+if rc<>0 then                                                           
+  Exit rc                                                               
+fixedField = word(isfcols,1)                                            
+do ix=1 to isfrows                                                      
+  do jx=1 to words(isfcols)                                             
+    col = word(isfcols,jx)                                              
+ /* Say "  Column" col"."ix "has the value:" value(col"."ix)  */        
+    Select                                                              
+     When col = SYSLEVEL  then call write_syslevel                      
+     When col = CPUPR     then call write_cpupr                         
+     When col = UIC       then call write_uic                           
+     When col = REALAFC   then call write_realafc                       
+     When col = STCNUM    then call write_stcnum                        
+     When col = TSUNUM    then call write_tsunum                        
+     When col = JOBNUM    then call write_jobnum                     
+     When col = CPC       then call write_cpc                        
+     Otherwise                 nop                                   
+  end                                                                
+end                                                                  
+"free file(msgout)"                                                  
+exit 0                                                               
+write_cpc:                                                           
+/* say "IBM Z Mainframe type is " value(col"."ix) */                 
+   msg.1 = 'IBM Z Mainframe type is : ' value(col"."ix)              
+   "execio 1 diskw msgout (stem msg.      "                          
+return                                                               
+write_syslevel:                                                      
+/* say "Operating System Level is " value(col"."ix)     */           
+   msg.1 = 'Operating System Level is : ' value(col"."ix)            
+   "execio 1 diskw msgout (stem msg.      "                          
+return                                                               
+write_cpupr:                                                         
+/* say "CPU percent busy for the system is " value(col"."ix) */      
+   msg.1 = 'CPU percent busy for the system is : ' value(col"."ix)   
+   "execio 1 diskw msgout (stem msg.      "                          
+return                                                               
+write_uic:                                                           
+/* say "High unreferenced interval count is " value(col"."ix) */     
+   msg.1 = 'High unreferenced interval count is :' value(col"."ix)   
+   "execio 1 diskw msgout (stem msg.      "                          
+return                                                               
+write_realafc:                                                       
+/* say "Real storage available frame count is " value(col"."ix) */   
+   msg.1 = 'Real storage available frame count is :' value(col"."ix) 
+   "execio 1 diskw msgout (stem msg.      "                          
+return                                                               
+write_stcnum:                                                        
+/* say "Number of active started tasks is " value(col"."ix) */       
+   msg.1 = 'Number of active started tasks is :' value(col"."ix)     
+   "execio 1 diskw msgout (stem msg.      "                       
+return                                                            
+write_tsunum:                                                     
+/* say "Number of active TSO users is " value(col"."ix) */        
+   msg.1 = 'Number of active TSO users is :' value(col"."ix)      
+   "execio 1 diskw msgout (stem msg.      "                       
+return                                                            
+write_jobnum:                                                     
+/* say "Number of active batch jobs is " value(col"."ix) */       
+   msg.1 = 'Number of active batch jobs is :' value(col"."ix)     
+   "execio 1 diskw msgout (stem msg.      "                       
+return                                                            
